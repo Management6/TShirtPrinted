@@ -7,7 +7,6 @@ import { SizeGuidePage } from "@/app/components/SizeGuidePage";
 import { FaqPage } from "@/app/components/FaqPage";
 import { ContactPage } from "@/app/components/ContactPage";
 import { Input } from "@/app/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 import { Search } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import BrisVegasWhiteFront from "@/app/components/images/BrisVegas/new_flatlay_front_white.png";

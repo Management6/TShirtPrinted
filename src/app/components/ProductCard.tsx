@@ -42,18 +42,16 @@ export function ProductCard({ product, onProductClick }: ProductCardProps) {
           <span className="text-2xl">${product.price.toFixed(2)}</span>
           <span className="text-sm text-gray-500">{product.sizes.length} sizes</span>
         </div>
-        {product.productUrl && (
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open(product.productUrl as string, "_blank");
-            }}
-          >
-            View Product
-          </Button>
-        )}
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={(e) => {
+            e.stopPropagation();
+            onProductClick(product);
+          }}
+        >
+          View Product
+        </Button>
       </CardContent>
     </Card>
   );

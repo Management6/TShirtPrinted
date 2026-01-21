@@ -94,8 +94,6 @@ export function ProductDetailDialog({ product, isOpen, onClose, onAddToCart }: P
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<0 | 1>(0);
 
-  if (!product) return null;
-
   useEffect(() => {
     if (!isOpen) {
       setIsLightboxOpen(false);
@@ -104,6 +102,8 @@ export function ProductDetailDialog({ product, isOpen, onClose, onAddToCart }: P
       setSelectedColor("");
     }
   }, [isOpen]);
+
+  if (!product) return null;
 
   const getDisplayPrice = () => {
     if (product.id === 1 && selectedColor && selectedSize) {
