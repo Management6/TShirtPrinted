@@ -1,7 +1,5 @@
-import { ShoppingCart } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent } from "@/app/components/ui/card";
-import { Badge } from "@/app/components/ui/badge";
 
 export interface Product {
   id: number;
@@ -12,15 +10,23 @@ export interface Product {
   sizes: string[];
   colors: string[];
   description: string;
+  // Optional Shopify URLs
+  // Example:
+  // productUrl: "https://yourstore.myshopify.com/products/brisvegas?variant=50958434042134"
+  // buyNowUrl: "https://yourstore.myshopify.com/cart/50958434042134:1"
+  productUrl?: string;
+  buyNowUrl?: string;
+  // Optional per-colour images (e.g. for BrisVegas)
+  colorImages?: Record<string, string>;      // front
+  colorBackImages?: Record<string, string>;  // back
 }
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
   onProductClick: (product: Product) => void;
 }
 
-export function ProductCard({ product, onAddToCart, onProductClick }: ProductCardProps) {
+export function ProductCard({ product, onProductClick }: ProductCardProps) {
   return (
     <Card className="group overflow-hidden border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
       <div onClick={() => onProductClick(product)} className="relative aspect-square overflow-hidden bg-gray-100">
@@ -29,9 +35,6 @@ export function ProductCard({ product, onAddToCart, onProductClick }: ProductCar
           alt={product.name}
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
         />
-        <Badge className="absolute top-3 right-3 bg-white text-black hover:bg-white">
-          {product.category}
-        </Badge>
       </div>
       <CardContent className="p-4">
         <h3 className="mb-2 line-clamp-1">{product.name}</h3>
@@ -39,16 +42,18 @@ export function ProductCard({ product, onAddToCart, onProductClick }: ProductCar
           <span className="text-2xl">${product.price.toFixed(2)}</span>
           <span className="text-sm text-gray-500">{product.sizes.length} sizes</span>
         </div>
-        <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            onAddToCart(product);
-          }}
-          className="w-full"
-        >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Add to Cart
-        </Button>
+        {product.productUrl && (
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(product.productUrl as string, "_blank");
+            }}
+          >
+            View Product
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

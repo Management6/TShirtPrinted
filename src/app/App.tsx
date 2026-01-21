@@ -2,73 +2,129 @@ import { useState } from "react";
 import { ProductCard, Product } from "@/app/components/ProductCard";
 import { ShoppingCartSheet, CartItem } from "@/app/components/ShoppingCartSheet";
 import { ProductDetailDialog } from "@/app/components/ProductDetailDialog";
+import { ShippingReturnsPage } from "@/app/components/ShippingReturnsPage";
+import { SizeGuidePage } from "@/app/components/SizeGuidePage";
+import { FaqPage } from "@/app/components/FaqPage";
+import { ContactPage } from "@/app/components/ContactPage";
 import { Input } from "@/app/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 import { Search } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import BrisVegasWhiteFront from "@/app/components/images/BrisVegas/new_flatlay_front_white.png";
+import BrisVegasSandFront from "@/app/components/images/BrisVegas/new_flatlay_front_sand.png";
+import BrisVegasAshFront from "@/app/components/images/BrisVegas/new_flatlay_front_ash.png";
+import BrisVegasRoyalFront from "@/app/components/images/BrisVegas/new_flatlay_front_royal.png";
+import BrisVegasRedFront from "@/app/components/images/BrisVegas/new_flatlay_front_red.png";
+import BrisVegasBlackFront from "@/app/components/images/BrisVegas/new_flatlay_front_black.png";
+import BrisVegasPurpleFront from "@/app/components/images/BrisVegas/new_flatlay_front_purple.png";
+import BrisVegasWhiteBack from "@/app/components/images/BrisVegas/editor_back_white.png";
+import BrisVegasSandBack from "@/app/components/images/BrisVegas/editor_back_sand.png";
+import BrisVegasAshBack from "@/app/components/images/BrisVegas/editor_back_ash.png";
+import BrisVegasRoyalBack from "@/app/components/images/BrisVegas/editor_back_royal.png";
+import BrisVegasRedBack from "@/app/components/images/BrisVegas/editor_back_red.png";
+import BrisVegasBlackBack from "@/app/components/images/BrisVegas/editor_back_black.png";
+import BrisVegasPurpleBack from "@/app/components/images/BrisVegas/editor_back_purple.png";
 
 const PRODUCTS: Product[] = [
   {
     id: 1,
-    name: "Artistic Expression Tee",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1655141559787-25ac8cfca72f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmludGVkJTIwZ3JhcGhpYyUyMHRzaGlydHxlbnwxfHx8fDE3Njg1MjkwNDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    name: "BrisVegas",
+    price: 42.46,
+    image: BrisVegasWhiteFront,
     category: "Graphic",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["White", "Black", "Navy"],
-    description: "Express yourself with this unique artistic design. Premium cotton blend for maximum comfort.",
-  },
-  {
-    id: 2,
-    name: "Classic Black Premium",
-    price: 34.99,
-    image: "https://images.unsplash.com/photo-1578237421804-9674940e8b8e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHRzaGlydCUyMGRlc2lnbnxlbnwxfHx8fDE3Njg1MTkxOTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    category: "Essential",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "Charcoal"],
-    description: "A timeless classic. This premium black tee is a wardrobe essential that never goes out of style.",
-  },
-  {
-    id: 3,
-    name: "Minimalist White",
-    price: 27.99,
-    image: "https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aGl0ZSUyMHRzaGlydCUyMG1vY2t1cHxlbnwxfHx8fDE3Njg1MjkwNDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    category: "Minimal",
-    sizes: ["XS", "S", "M", "L", "XL"],
-    colors: ["White", "Cream", "Beige"],
-    description: "Clean lines and minimal design. Perfect for everyday wear with a touch of elegance.",
-  },
-  {
-    id: 4,
-    name: "Vibrant Colors Collection",
-    price: 32.99,
-    image: "https://images.unsplash.com/photo-1594303471920-b66b769a6b8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xvcmZ1bCUyMHRzaGlydHxlbnwxfHx8fDE3Njg0Mjc4NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    category: "Colorful",
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Blue", "Red", "Green", "Yellow"],
-    description: "Make a statement with bold colors. High-quality dye that won't fade after washing.",
-  },
-  {
-    id: 5,
-    name: "Vintage Retro Print",
-    price: 36.99,
-    image: "https://images.unsplash.com/photo-1549369130-1f99f678dc12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwdHNoaXJ0fGVufDF8fHx8MTc2ODQ5NDYzMnww&ixlib=rb-4.1.0&q=80&w=1080",
-    category: "Vintage",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Tan", "Olive", "Burgundy"],
-    description: "Inspired by vintage designs from the golden era. Soft-washed fabric for that worn-in feel.",
-  },
-  {
-    id: 6,
-    name: "Modern Minimal Design",
-    price: 31.99,
-    image: "https://images.unsplash.com/photo-1542219550-b1b13a6a29eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwdHNoaXJ0fGVufDF8fHx8MTc2ODUyOTA0OHww&ixlib=rb-4.1.0&q=80&w=1080",
-    category: "Minimal",
-    sizes: ["XS", "S", "M", "L", "XL"],
-    colors: ["White", "Black", "Gray"],
-    description: "Contemporary design meets comfort. Perfect for the modern minimalist lifestyle.",
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"],
+    colors: ["White", "Sand", "Ash", "Royal", "Red", "Black", "Purple"],
+    description: "Celebrate BrisVegas in style with this premium printed tee.",
+    productUrl: "https://nxwpuc-xs.myshopify.com/products/brisvegas?variant=50958434042134",
+    buyNowUrl: "https://nxwpuc-xs.myshopify.com/cart/50958434042134:1",
+    colorImages: {
+      White: BrisVegasWhiteFront,
+      Sand: BrisVegasSandFront,
+      Ash: BrisVegasAshFront,
+      Royal: BrisVegasRoyalFront,
+      Red: BrisVegasRedFront,
+      Black: BrisVegasBlackFront,
+      Purple: BrisVegasPurpleFront,
+    },
+    colorBackImages: {
+      White: BrisVegasWhiteBack,
+      Sand: BrisVegasSandBack,
+      Ash: BrisVegasAshBack,
+      Royal: BrisVegasRoyalBack,
+      Red: BrisVegasRedBack,
+      Black: BrisVegasBlackBack,
+      Purple: BrisVegasPurpleBack,
+    },
   },
 ];
+
+// BrisVegas variant prices (AUD) keyed by "Color-Size"
+const BRISVEGAS_PRICES: Record<string, number> = {
+  "White-S": 42.46,
+  "White-M": 42.46,
+  "White-L": 42.46,
+  "White-XL": 42.46,
+  "White-2XL": 46.64,
+  "White-3XL": 50.49,
+  "White-4XL": 61.9,
+  "White-5XL": 66.31,
+
+  "Sand-S": 49.18,
+  "Sand-M": 49.18,
+  "Sand-L": 49.18,
+  "Sand-XL": 49.18,
+  "Sand-2XL": 53.96,
+  "Sand-3XL": 58.39,
+  "Sand-4XL": 62.68,
+  "Sand-5XL": 67.09,
+
+  "Ash-S": 49.05,
+  "Ash-M": 49.05,
+  "Ash-L": 49.05,
+  "Ash-XL": 49.05,
+  "Ash-2XL": 53.84,
+  "Ash-3XL": 58.26,
+  "Ash-4XL": 62.68,
+  "Ash-5XL": 67.09,
+
+  "Royal-S": 43.15,
+  "Royal-M": 43.15,
+  "Royal-L": 43.15,
+  "Royal-XL": 43.15,
+  "Royal-2XL": 47.31,
+  "Royal-3XL": 51.16,
+  "Royal-4XL": 62.68,
+  "Royal-5XL": 67.09,
+
+  "Red-S": 43.15,
+  "Red-M": 43.15,
+  "Red-L": 43.15,
+  "Red-XL": 43.15,
+  "Red-2XL": 47.31,
+  "Red-3XL": 51.16,
+  "Red-4XL": 62.68,
+  "Red-5XL": 67.09,
+
+  "Black-S": 42.46,
+  "Black-M": 42.46,
+  "Black-L": 42.46,
+  "Black-XL": 42.46,
+  "Black-2XL": 46.64,
+  "Black-3XL": 50.49,
+  "Black-4XL": 61.9,
+  "Black-5XL": 66.31,
+
+  "Purple-S": 43.15,
+  "Purple-M": 43.15,
+  "Purple-L": 43.15,
+  "Purple-XL": 43.15,
+  "Purple-2XL": 47.31,
+  "Purple-3XL": 51.16,
+  "Purple-4XL": 62.68,
+  "Purple-5XL": 67.09,
+};
+
+type InfoPage = "shipping-returns" | "size-guide" | "faq" | "contact" | null;
 
 export default function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -76,32 +132,48 @@ export default function App() {
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [activeInfoPage, setActiveInfoPage] = useState<InfoPage>(null);
 
-  const handleAddToCart = (product: Product, size: string = "M") => {
+  const handleAddToCart = (product: Product, size: string = "M", color: string = "") => {
+    // Calculate variant-specific price where we have data (currently BrisVegas)
+    let price = product.price;
+    if (product.id === 1 && color && size) {
+      const key = `${color}-${size}`;
+      const variantPrice = BRISVEGAS_PRICES[key];
+      if (variantPrice) {
+        price = variantPrice;
+      }
+    }
+
     const existingItem = cartItems.find(
-      (item) => item.id === product.id && item.size === size
+      (item) => item.id === product.id && item.size === size && item.color === color
     );
 
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === existingItem.id && item.size === size
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+      if (existingItem) {
+        setCartItems(
+          cartItems.map((item) =>
+            item.id === existingItem.id && item.size === size
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
         )
       );
     } else {
-      setCartItems([
-        ...cartItems,
-        {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: 1,
-          size,
-        },
-      ]);
+        setCartItems([
+          ...cartItems,
+          {
+            id: product.id,
+            name: product.name,
+            price,
+            image:
+              color && product.colorImages && product.colorImages[color]
+                ? product.colorImages[color]
+                : product.image,
+            quantity: 1,
+            size,
+            color,
+            buyNowUrl: product.buyNowUrl,
+          },
+        ]);
     }
     
     toast.success(`${product.name} added to cart!`);
@@ -125,17 +197,13 @@ export default function App() {
     setIsDetailDialogOpen(true);
   };
 
-  const filteredProducts = PRODUCTS.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || product.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
-
-  const categories = ["all", ...Array.from(new Set(PRODUCTS.map((p) => p.category)))];
+  const filteredProducts = PRODUCTS.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-white">
-      <Toaster position="top-center" />
+      <Toaster position="bottom-center" />
       
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white border-b">
@@ -153,68 +221,70 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-gray-50 to-gray-100 py-16 px-4">
-        <div className="container mx-auto text-center">
-          <h2 className="text-5xl mb-4">Premium Printed T-Shirts</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Express yourself with our exclusive collection
-          </p>
-          <div className="max-w-md mx-auto relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <Input
-              type="text"
-              placeholder="Search for designs..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </div>
-      </section>
+      {activeInfoPage === null && (
+        <>
+          {/* Hero Section */}
+          <section className="bg-gradient-to-r from-gray-50 to-gray-100 py-16 px-4">
+            <div className="container mx-auto text-center">
+              <h2 className="text-5xl mb-4">Premium Printed T-Shirts</h2>
+              <p className="text-xl text-gray-600 mb-8">
+                Express yourself with our exclusive collection
+              </p>
+              <div className="max-w-md mx-auto relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Input
+                  type="text"
+                  placeholder="Search for designs..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+          </section>
 
-      {/* Filters */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">Category:</span>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <span className="text-gray-500">
-            {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
-          </span>
-        </div>
+          {/* Product Grid */}
+          <section className="container mx-auto px-4 py-8">
+            <div className="flex items-center justify-end mb-6">
+              <span className="text-gray-500">
+                {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onProductClick={handleProductClick}
+                />
+              ))}
+            </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={(product) => handleAddToCart(product)}
-              onProductClick={handleProductClick}
-            />
-          ))}
-        </div>
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-16 text-gray-500">
+                <p className="text-xl">No products found</p>
+                <p className="mt-2">Try adjusting your search or filters</p>
+              </div>
+            )}
+          </section>
+        </>
+      )}
 
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-16 text-gray-500">
-            <p className="text-xl">No products found</p>
-            <p className="mt-2">Try adjusting your search or filters</p>
-          </div>
-        )}
-      </section>
+      {activeInfoPage !== null && (
+        <section className="container mx-auto px-4 py-12">
+          <button
+            className="mb-6 text-sm text-gray-500 hover:text-gray-700"
+            onClick={() => setActiveInfoPage(null)}
+          >
+            ← Back to shopping
+          </button>
+
+          {activeInfoPage === "shipping-returns" && <ShippingReturnsPage />}
+          {activeInfoPage === "size-guide" && <SizeGuidePage />}
+          {activeInfoPage === "faq" && <FaqPage />}
+          {activeInfoPage === "contact" && <ContactPage />}
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-50 border-t mt-16">
@@ -229,10 +299,38 @@ export default function App() {
             <div>
               <h3 className="mb-4">Customer Service</h3>
               <ul className="space-y-2 text-gray-600">
-                <li>Shipping & Returns</li>
-                <li>Size Guide</li>
-                <li>FAQ</li>
-                <li>Contact Us</li>
+                <li>
+                  <button
+                    className="hover:text-gray-800 underline-offset-2 hover:underline"
+                    onClick={() => setActiveInfoPage("shipping-returns")}
+                  >
+                    Shipping
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="hover:text-gray-800 underline-offset-2 hover:underline"
+                    onClick={() => setActiveInfoPage("size-guide")}
+                  >
+                    Size Guide
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="hover:text-gray-800 underline-offset-2 hover:underline"
+                    onClick={() => setActiveInfoPage("faq")}
+                  >
+                    FAQ
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="hover:text-gray-800 underline-offset-2 hover:underline"
+                    onClick={() => setActiveInfoPage("contact")}
+                  >
+                    Contact Us
+                  </button>
+                </li>
               </ul>
             </div>
             <div>
