@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/app/components/ui/dialog";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
@@ -91,8 +91,19 @@ interface ProductDetailDialogProps {
 export function ProductDetailDialog({ product, isOpen, onClose, onAddToCart }: ProductDetailDialogProps) {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<0 | 1>(0);
 
   if (!product) return null;
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsLightboxOpen(false);
+      setLightboxIndex(0);
+      setSelectedSize("");
+      setSelectedColor("");
+    }
+  }, [isOpen]);
 
   const getDisplayPrice = () => {
     if (product.id === 1 && selectedColor && selectedSize) {
@@ -147,14 +158,22 @@ export function ProductDetailDialog({ product, isOpen, onClose, onAddToCart }: P
               <img
                 src={getFrontImage()}
                 alt={`${product.name} front`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover cursor-pointer"
+                onClick={() => {
+                  setLightboxIndex(0);
+                  setIsLightboxOpen(true);
+                }}
               />
             </div>
             <div className="aspect-square overflow-hidden rounded-lg bg-gray-100">
               <img
                 src={getBackImage()}
                 alt={`${product.name} back`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover cursor-pointer"
+                onClick={() => {
+                  setLightboxIndex(1);
+                  setIsLightboxOpen(true);
+                }}
               />
             </div>
           </div>
@@ -230,6 +249,50 @@ export function ProductDetailDialog({ product, isOpen, onClose, onAddToCart }: P
             )}
           </div>
         </div>
+
+        {isLightboxOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <button
+              type="button"
+              className="absolute top-4 right-6 text-white text-2xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLightboxOpen(false);
+              }}
+            >
+              ×
+            </button>
+            <button
+              type="button"
+              className="absolute left-4 md:left-8 text-white text-3xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex(lightboxIndex === 0 ? 1 : 0);
+              }}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              className="absolute right-4 md:right-8 text-white text-3xl"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex(lightboxIndex === 0 ? 1 : 0);
+              }}
+            >
+              ›
+            </button>
+            <img
+              src={lightboxIndex === 0 ? getFrontImage() : getBackImage()}
+              alt={product.name}
+              className="max-h-[70vh] max-w-[80vw] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
