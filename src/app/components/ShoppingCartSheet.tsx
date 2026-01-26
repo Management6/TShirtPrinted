@@ -70,6 +70,72 @@ const BRISVEGAS_VARIANTS: Record<string, string> = {
   "Purple-5XL": "50958435844374",
 };
 
+// Variant mapping for Bottle w/Gun (product id: 2)
+const BOTTLE_W_GUN_VARIANTS: Record<string, string> = {
+  "White-S": "50989375619350",
+  "White-M": "50989375652118",
+  "White-L": "50989375684886",
+  "White-XL": "50989375717654",
+  "White-2XL": "50989375750422",
+  "White-3XL": "50989375783190",
+  "White-4XL": "50989375815958",
+  "White-5XL": "50989375848726",
+
+  "Sand-S": "50989375881494",
+  "Sand-M": "50989375914262",
+  "Sand-L": "50989375947030",
+  "Sand-XL": "50989375979798",
+  "Sand-2XL": "50989376012566",
+  "Sand-3XL": "50989376045334",
+  "Sand-4XL": "50989376078102",
+  "Sand-5XL": "50989376110870",
+
+  "Ash-S": "50989375881494",
+  "Ash-M": "50989376176406",
+  "Ash-L": "50989376209174",
+  "Ash-XL": "50989376241942",
+  "Ash-2XL": "50989376274710",
+  "Ash-3XL": "50989376307478",
+  "Ash-4XL": "50989376340246",
+  "Ash-5XL": "50989376373014",
+
+  "Royal-S": "50989376143638",
+  "Royal-M": "50989376438550",
+  "Royal-L": "50989376471318",
+  "Royal-XL": "50989376504086",
+  "Royal-2XL": "50989376536854",
+  "Royal-3XL": "50989376569622",
+  "Royal-4XL": "50989376602390",
+  "Royal-5XL": "50989376635158",
+
+  "Red-S": "50989376405782",
+  "Red-M": "50989376700694",
+  "Red-L": "50989376733462",
+  "Red-XL": "50989376766230",
+  "Red-2XL": "50989376798998",
+  "Red-3XL": "50989376831766",
+  "Red-4XL": "50989376864534",
+  "Red-5XL": "50989376897302",
+
+  "Black-S": "50989376667926",
+  "Black-M": "50989376962838",
+  "Black-L": "50989376995606",
+  "Black-XL": "50989377028374",
+  "Black-2XL": "50989377061142",
+  "Black-3XL": "50989377093910",
+  "Black-4XL": "50989377126678",
+  "Black-5XL": "50989377159446",
+
+  "Purple-S": "50989377192214",
+  "Purple-M": "50989377224982",
+  "Purple-L": "50989377257750",
+  "Purple-XL": "50989377290518",
+  "Purple-2XL": "50989377323286",
+  "Purple-3XL": "50989377356054",
+  "Purple-4XL": "50989377388822",
+  "Purple-5XL": "50989377421590",
+};
+
 export interface CartItem {
   id: number;
   name: string;
@@ -95,14 +161,20 @@ export function ShoppingCartSheet({ cartItems, onUpdateQuantity, onRemoveItem }:
     const quantitiesByVariant: Record<string, number> = {};
 
     cartItems.forEach((item) => {
-      // Currently only BrisVegas (id: 1) is mapped
-      if (item.id === 1 && item.color && item.size) {
-        const key = `${item.color}-${item.size}`;
-        const variantId = BRISVEGAS_VARIANTS[key];
-        if (variantId) {
-          quantitiesByVariant[variantId] =
-            (quantitiesByVariant[variantId] ?? 0) + item.quantity;
-        }
+      if (!item.color || !item.size) return;
+
+      const key = `${item.color}-${item.size}`;
+
+      let variantId: string | undefined;
+      if (item.id === 1) {
+        variantId = BRISVEGAS_VARIANTS[key];
+      } else if (item.id === 2) {
+        variantId = BOTTLE_W_GUN_VARIANTS[key];
+      }
+
+      if (variantId) {
+        quantitiesByVariant[variantId] =
+          (quantitiesByVariant[variantId] ?? 0) + item.quantity;
       }
     });
 

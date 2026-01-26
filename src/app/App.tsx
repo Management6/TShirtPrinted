@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { ProductCard, Product } from "@/app/components/ProductCard";
 import { ShoppingCartSheet, CartItem } from "@/app/components/ShoppingCartSheet";
 import { ProductDetailDialog } from "@/app/components/ProductDetailDialog";
@@ -23,6 +24,20 @@ import BrisVegasRoyalBack from "@/app/components/images/BrisVegas/editor_back_ro
 import BrisVegasRedBack from "@/app/components/images/BrisVegas/editor_back_red.png";
 import BrisVegasBlackBack from "@/app/components/images/BrisVegas/editor_back_black.png";
 import BrisVegasPurpleBack from "@/app/components/images/BrisVegas/editor_back_purple.png";
+import BottleWGunWhiteFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-white.png";
+import BottleWGunSandFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-sand.png";
+import BottleWGunAshFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-ash.png";
+import BottleWGunRoyalFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-royal.png";
+import BottleWGunRedFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-red.png";
+import BottleWGunBlackFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-black.png";
+import BottleWGunPurpleFront from "@/app/components/images/Bottle-w-Gun/new_flatlay_front-purple.png";
+import BottleWGunWhiteBack from "@/app/components/images/Bottle-w-Gun/editor_back-white.png";
+import BottleWGunSandBack from "@/app/components/images/Bottle-w-Gun/editor_back-sand.png";
+import BottleWGunAshBack from "@/app/components/images/Bottle-w-Gun/editor_back-ash.png";
+import BottleWGunRoyalBack from "@/app/components/images/Bottle-w-Gun/editor_back-royal.png";
+import BottleWGunRedBack from "@/app/components/images/Bottle-w-Gun/editor_back-red.png";
+import BottleWGunBlackBack from "@/app/components/images/Bottle-w-Gun/editor_back-black.png";
+import BottleWGunPurpleBack from "@/app/components/images/Bottle-w-Gun/editor_back-purple.png";
 
 const PRODUCTS: Product[] = [
   {
@@ -53,6 +68,36 @@ const PRODUCTS: Product[] = [
       Red: BrisVegasRedBack,
       Black: BrisVegasBlackBack,
       Purple: BrisVegasPurpleBack,
+    },
+  },
+  {
+    id: 2,
+    name: "Bottle w/Gun",
+    price: 42.46,
+    image: BottleWGunWhiteFront,
+    category: "Graphic",
+    sizes: ["S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"],
+    colors: ["White", "Sand", "Ash", "Royal", "Red", "Black", "Purple"],
+    description: "Bold Bottle w/Gun design on a premium printed tee.",
+    productUrl: "https://nxwpuc-xs.myshopify.com/products/bottle-w-gun",
+    buyNowUrl: "https://nxwpuc-xs.myshopify.com/cart/50958434042134:1",
+    colorImages: {
+      White: BottleWGunWhiteFront,
+      Sand: BottleWGunSandFront,
+      Ash: BottleWGunAshFront,
+      Royal: BottleWGunRoyalFront,
+      Red: BottleWGunRedFront,
+      Black: BottleWGunBlackFront,
+      Purple: BottleWGunPurpleFront,
+    },
+    colorBackImages: {
+      White: BottleWGunWhiteBack,
+      Sand: BottleWGunSandBack,
+      Ash: BottleWGunAshBack,
+      Royal: BottleWGunRoyalBack,
+      Red: BottleWGunRedBack,
+      Black: BottleWGunBlackBack,
+      Purple: BottleWGunPurpleBack,
     },
   },
 ];
@@ -352,6 +397,8 @@ export default function App() {
         onClose={() => setIsDetailDialogOpen(false)}
         onAddToCart={handleAddToCart}
       />
+
+      <Analytics />
     </div>
   );
 }
